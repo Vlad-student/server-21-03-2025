@@ -13,8 +13,17 @@ const app = express();
 // res.end(`<h1>${requestStr}</h1>`);
 // });
 
-app.get('/users/:userId', (req, res) =>{
-    res.end(`<h1> ${req.path} <br> ${req.params.userId} </h1>`)
-});
+// app.get('/', (req, res) =>{
+//     res.end()
+// });
+
+// app.get(
+//     '/',
+//     (req,res, next)=>{
+//         req.test = 5;
+//         console.log('first');
+//         next();
+//     }
+// )
 
 module.exports = app;
