@@ -1,10 +1,16 @@
-const express = require('express');
-const { createUser } = require('./controllers/user.controller');
+const express = require("express");
+const userRouter = require('./routes/user.router');
+const homeworkRouter = require("./routes/homework.router");
 const app = express();
 
-app.use(express.json());   // json -> object
+app.use(express.json()); 
 
-app.post('/users', createUser);
+app.use('/users', userRouter);
+app.use('/homeworks', homeworkRouter);
+
+app.use((err, req, res, next) => {
+  console.log(err.message);
+  res.status(500).send({ errors: [err.message] });
+});
 
 module.exports = app;
-

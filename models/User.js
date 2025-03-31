@@ -4,6 +4,7 @@ const {Schema} = mongoose;
 const userSchema = new Schema({
     login:{
         type: String,
+        trim: true,
         required: true,
         minLength: 5,
         maxLength: 20,
@@ -12,6 +13,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+        trim: true,
     },
     isMale:{
         type: Boolean,
