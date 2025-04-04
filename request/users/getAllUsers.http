@@ -1,1 +1,2 @@
-GET http://localhost:3000/users HTTP/1.1
+GET http://localhost:3000/users?minAge=20&maxAge=30&gender=female HTTP/1.1
+

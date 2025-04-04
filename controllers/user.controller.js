@@ -11,7 +11,26 @@ module.exports.createUser = async (req, res, next) => {
 
 module.exports.findAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
+    console.log(req.query);
+    const { gender, minAge,maxAge , login } = req.query;
+    const filter = {};
+    if (gender) {
+      filter.isMale = gender === "male";
+    }
+    if(login)
+    {
+      filter.login =login
+    }
+    if(minAge || maxAge){
+      filter.age ={};
+      if(minAge){
+        filter.age.$gte = Number(minAge);
+      }
+      if(maxAge){
+        filter.age.$lt = Number(maxAge);
+      }
+     }
+    const users = await User.find( filter );
     res.status(200).send({ data: users });
   } catch (err) {
     next(err);
@@ -46,9 +65,9 @@ module.exports.updateUserById = async (req, res, next) => {
 module.exports.deleteUserById = async (req, res, next) => {
   try {
     const deletedUser = await User.findByIdAndDelete(req.params.idUser);
-      if (!deletedUser) {
+    if (!deletedUser) {
       return res.status(404).send({ data: "user not found" });
-    };
+    }
     res.status(200).send({ data: deletedUser });
   } catch (error) {
     next(error);
