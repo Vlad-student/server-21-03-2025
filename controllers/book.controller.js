@@ -12,6 +12,7 @@ module.exports.createBook = async (req, res, next) => {
 module.exports.findAllBooks = async (req, res, next) => {
   try {
     const { title, author, genre, minYear, maxYear, available } = req.query;
+    const { limit, skip} = req.pagination;
     const filter = {};
     if (title) {
       filter.title = new RegExp(title, "i");
@@ -34,7 +35,7 @@ module.exports.findAllBooks = async (req, res, next) => {
         filter.available = available === "yes";
       }
     }
-    const books = await Book.find(filter);
+    const books = await Book.find(filter).skip(skip).limit(limit);
     res.status(200).send({ data: books });
   } catch (error) {
     next(error);

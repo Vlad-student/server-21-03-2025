@@ -1,3 +1,4 @@
+const createError = require('http-errors');
 const Homework = require("../models/Homework");
 
 module.exports.createHomework = async (req, res, next) => {
@@ -5,13 +6,14 @@ module.exports.createHomework = async (req, res, next) => {
     const newHomeWork = await Homework.create(req.body);
     res.status(201).send({ data: newHomeWork });
   } catch (error) {
-    next(error);
+    next(createError(400, error.message));
   }
 };
 
 module.exports.findAllHomeworks = async (req, res, next) => {
   try {
     const { subject, task } = req.query;
+    const {limit , skip} = req.pagination;
     const filter = {};
     if (subject) {
       filter.subject = new RegExp(subject, "i");
@@ -19,7 +21,7 @@ module.exports.findAllHomeworks = async (req, res, next) => {
     if (task) {
       filter.task = new RegExp(task, "i");
     }
-    const homeworks = await Homework.find(filter);
+    const homeworks = await Homework.find(filter).skip(skip).limit(limit);
     res.status(200).send({ data: homeworks });
   } catch (error) {
     next(error);
@@ -31,7 +33,7 @@ module.exports.findHomeworkById = async (req, res, next) => {
     const homework = await Homework.findById(req.params.idHomework);
     res.status(200).send({ data: homework });
   } catch (error) {
-    next(error);
+    return next(404, 'id book not found');
   }
 };
 

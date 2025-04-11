@@ -6,13 +6,20 @@ const {
   updateBookById,
   deleteBookById,
 } = require("../controllers/book.controller");
+const { validateBook, validateBookQuery } = require("../middlewares/book.mv");
+const {
+  bookShemaPost,
+  bookShemaUpdate,
+  bookShemaQuery,
+} = require("../validations/book.validation");
+const { paginate } = require("../middlewares/pagination.mv");
 
 const bookRouter = express.Router();
 
-bookRouter.post('/', createBook);
-bookRouter.get('/', findAllBooks);
-bookRouter.get('/:idBook', findBookById);
-bookRouter.patch('/:idBook', updateBookById);
-bookRouter.delete('/:idBook', deleteBookById);
+bookRouter.post("/", validateBookQuery(bookShemaQuery) ,validateBook(bookShemaPost), createBook);
+bookRouter.get("/",paginate ,validateBookQuery(bookShemaQuery), findAllBooks);
+bookRouter.get("/:idBook", findBookById);
+bookRouter.patch("/:idBook",validateBookQuery(bookShemaQuery), validateBook(bookShemaUpdate), updateBookById);
+bookRouter.delete("/:idBook", deleteBookById);
 
-module.exports = bookRouter; 
+module.exports = bookRouter;
