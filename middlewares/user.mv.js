@@ -21,3 +21,28 @@ module.exports.validateUserQuery =
       next(createError(400, error.message));
     }
   };
+
+module.exports.buildFilterUser = () => async (req, res, next) => {
+  try {
+    const { gender, minAge, maxAge, login } = req.query;
+    req.filter = {};
+    if (gender) {
+      req.filter.isMale = gender === "male";
+    }
+    if (login) {
+      req.filter.login = login;
+    }
+    if (minAge || maxAge) {
+      req.filter.age = {};
+      if (minAge) {
+        req.filter.age.$gte = Number(minAge);
+      }
+      if (maxAge) {
+        req.filter.age.$lt = Number(maxAge);
+      }
+    }
+    next();
+  } catch (error) {
+    next(createError(400, error.message));
+  }
+};

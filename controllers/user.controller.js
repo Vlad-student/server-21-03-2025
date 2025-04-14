@@ -14,24 +14,7 @@ module.exports.findAllUsers = async (req, res, next) => {
   try {
     console.log(req.query);
     const { limit, skip } = req.pagination;
-    const { gender, minAge, maxAge, login } = req.query;
-    const filter = {};
-    if (gender) {
-      filter.isMale = gender === "male";
-    }
-    if (login) {
-      filter.login = login;
-    }
-    if (minAge || maxAge) {
-      filter.age = {};
-      if (minAge) {
-        filter.age.$gte = Number(minAge);
-      }
-      if (maxAge) {
-        filter.age.$lt = Number(maxAge);
-      }
-    }
-    const users = await User.find(filter).skip(skip).limit(limit);
+    const users = await User.find(req.filter).skip(skip).limit(limit);
     res.status(200).send({ data: users });
   } catch (err) {
     next(err);

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const CONSTANTS = require("../constants");
 const { Schema } = mongoose;
 
 const bookSchema = new Schema({
@@ -6,34 +7,26 @@ const bookSchema = new Schema({
     type: String,
     trim: true,
     required: true,
-    maxLength: 2,
-    maxLength: 64,
+    maxLength: CONSTANTS.BOOK_TITLE_MIN,
+    maxLength: CONSTANTS.BOOK_TITLE_MAX,
   },
   author: {
     type: String,
     trim: true,
     required: true,
-    maxLength: 3,
-    maxLength: 64,
+    maxLength: CONSTANTS.BOOK_AUTHOR_MIN,
+    maxLength: CONSTANTS.BOOK_AUTHOR_MAX,
   },
   genre: {
     type: String,
     required: true,
     trim: true,
-    enum: [
-      "Fiction",
-      "Non-fiction",
-      "Fantasy",
-      "Science Fiction",
-      "Mystery",
-      "Biography",
-      "History",
-    ],
+    enum:CONSTANTS.BOOK_LIST_GENRE ,
   },
   year: {
     type: Number,
     required: true,
-    min: 1000,
+    min: CONSTANTS.BOOK_MIN_YEAR,
     max: new Date().getFullYear(),
   },
   available: {
