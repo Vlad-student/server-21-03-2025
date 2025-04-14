@@ -5,6 +5,8 @@ const {
   findUserById,
   updateUserById,
   deleteUserById,
+  countUsers,
+  userStatistic,
 } = require("../controllers/user.controller");
 const {
   validateUser,
@@ -25,9 +27,22 @@ userRouter.get(
   "/",
   paginate,
   validateUserQuery(userSchemaQuery),
-  buildFilterUser(),
+  buildFilterUser,
   findAllUsers
 );
+
+userRouter.get(
+  "/count",
+  validateUserQuery(userSchemaQuery),
+  buildFilterUser,
+  countUsers
+);
+
+userRouter.get(
+  '/stat',
+  userStatistic
+);
+
 userRouter.get("/:idUser", findUserById);
 userRouter.patch("/:idUser", validateUser(userSchemaUpdate), updateUserById);
 userRouter.put("/:idUser", updateUserById);

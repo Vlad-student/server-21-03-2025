@@ -5,6 +5,7 @@ const {
   findBookById,
   updateBookById,
   deleteBookById,
+  countBooks,
 } = require("../controllers/book.controller");
 const {
   validateBook,
@@ -33,6 +34,14 @@ bookRouter.get(
   buildFilterBook,
   findAllBooks
 );
+
+bookRouter.get(
+  "/count",
+  validateBookQuery(bookShemaQuery),
+  buildFilterBook,
+  countBooks
+);
+
 bookRouter.get("/:idBook", findBookById);
 bookRouter.patch(
   "/:idBook",

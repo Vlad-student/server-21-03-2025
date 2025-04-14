@@ -22,7 +22,7 @@ module.exports.validateUserQuery =
     }
   };
 
-module.exports.buildFilterUser = () => async (req, res, next) => {
+module.exports.buildFilterUser = async (req, res, next) => {
   try {
     const { gender, minAge, maxAge, login } = req.query;
     req.filter = {};

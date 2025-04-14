@@ -21,8 +21,9 @@ module.exports.validateBookQuery = (queryBookSchema) => async (req, res, next)=>
   }
 };
 
-module.exports.buildFilterBook = () => async (req, res, next) =>{
+module.exports.buildFilterBook = async (req, res, next) =>{
   try {
+    const { title, author, genre, minYear, maxYear, available } = req.query;
     req.filter = {};
     if (title) {
       req.filter.title = new RegExp(title, "i");
