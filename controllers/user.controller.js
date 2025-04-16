@@ -4,15 +4,19 @@ const User = require("../models/User");
 module.exports.userStatistic = async (req, res, next) => {
   try {
     const stat = await User.aggregate([
+      // { $match: { isMale: false } },
       {
         $facet: {
           countGender: [{ $group: { _id: "$isMale", count: { $sum: 1 } } }],
           statisticAge: [
-            {$group: 
-              {_id:null, 
-                avgAge: {$avg: "$age"}, 
-                minAge: {$min:"$age"}, 
-                maxAge:{$max:"$age"}}},
+            {
+              $group: {
+                _id: null,
+                avgAge: { $avg: "$age" },
+                minAge: { $min: "$age" },
+                maxAge: { $max: "$age" },
+              },
+            },
           ],
         },
       },
@@ -23,10 +27,13 @@ module.exports.userStatistic = async (req, res, next) => {
     //   gender.count = gender.count;
     //   return gender;
     // })
-    stat[0].countGender = stat[0].countGender.reduce((acc, gender)=>{
-gender._id ? (acc.male = gender.count) : (acc.female = gender.count);
-return acc;
-    }, {male:0, female:0});
+    stat[0].countGender = stat[0].countGender.reduce(
+      (acc, gender) => {
+        gender._id ? (acc.male = gender.count) : (acc.female = gender.count);
+        return acc;
+      },
+      { male: 0, female: 0 }
+    );
     res.status(200).send({ data: stat });
   } catch (error) {
     next(createError(400, error.message));
