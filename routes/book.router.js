@@ -6,6 +6,8 @@ const {
   updateBookById,
   deleteBookById,
   countBooks,
+  bookStatistic,
+  getTopAuthors
 } = require("../controllers/book.controller");
 const {
   validateBook,
@@ -36,10 +38,24 @@ bookRouter.get(
 );
 
 bookRouter.get(
+  '/top-authors',
+  validateBookQuery(bookShemaQuery),
+  buildFilterBook,
+  getTopAuthors
+);
+
+bookRouter.get(
   "/count",
   validateBookQuery(bookShemaQuery),
   buildFilterBook,
   countBooks
+);
+
+bookRouter.get(
+  '/stat',
+  validateBookQuery(bookShemaQuery),
+  buildFilterBook,
+  bookStatistic,
 );
 
 bookRouter.get("/:idBook", findBookById);

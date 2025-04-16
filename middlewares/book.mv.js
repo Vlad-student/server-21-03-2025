@@ -42,9 +42,9 @@ module.exports.buildFilterBook = async (req, res, next) =>{
       if (maxYear) {
         req.filter.year.$lt = Number(maxYear);
       }
-      if (available) {
-        req.filter.available = available === "yes";
-      }
+    }
+    if (available) {
+      req.filter.available = available === "yes";
     }
     next();
   } catch (error) {
